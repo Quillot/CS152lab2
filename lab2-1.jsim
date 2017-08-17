@@ -1,0 +1,30 @@
+*Implementation for a 4 input NOR gate
+*By Gabriel De Jesus & Jayce Caylah Ching, CS152B
+
+.include "8clocks.jsim"
+.include "nominal.jsim"
+
+*Written in the format source gate drain
+
+*CLK1 MOSFET [MP1, MN1]
+MP1 vdd clk1 a 0 PENH W=1u L=1u
+MN1 out clk1 0 0 NENH W=1u L=1u
+
+*CLK2 MOSFET [MP2, MN2]
+MP2 a clk2 b 0 PENH W=1u L=1u
+MN2 out clk2 0 0 NENH W=1u L=1u
+
+*CLK3 MOSFET [MP3, MN3]
+MP3 b clk3 c 0 PENH W=1u L=1u
+MN3 out clk3 0 0 NENH W=1u L=1u
+
+*CLK4 MOSFET [MP4, MN4]
+MP4 c clk4 out 0 PENH W=1u L=1u
+MN4 out clk4 0 0 NENH W=1u L=1u
+
+*Plot
+.tran 100ns
+.plot clk1 out
+.plot clk2 out
+.plot clk3 out
+.plot clk4 out
