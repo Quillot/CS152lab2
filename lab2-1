@@ -1,8 +1,0 @@
-*Implementation for a 4 input NOR gate
-*By Gabriel De Jesus & Jayce Caylah Ching, CS152B
-
-.include "8clocks.jsim"
-.include "nominal.jsim"
-
-*NFET
-MP1 vdd clk1 a NENH W=1u L=1u

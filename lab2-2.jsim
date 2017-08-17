@@ -1,4 +1,4 @@
-*Implementation for a 4 input NAND gate
+*#2. Implementation for a 4 input NAND gate
 *By Gabriel De Jesus & Jayce Caylah Ching, CS152B
 
 .include "8clocks.jsim"
@@ -7,19 +7,19 @@
 *Written in the format source gate drain
 
 *CLK1 MOSFET [MP1, MN1]
-MP1 vdd clk1 out 0 PENH W=1u L=1u
+MP1 vdd clk1 out vdd PENH W=1u L=1u
 MN1 out clk1 a 0 NENH W=1u L=1u
 
 *CLK2 MOSFET [MP2, MN2]
-MP2 vdd clk2 out 0 PENH W=1u L=1u
+MP2 vdd clk2 out vdd PENH W=1u L=1u
 MN2 a clk2 b 0 NENH W=1u L=1u
 
 *CLK3 MOSFET [MP3, MN3]
-MP3 vdd clk3 out 0 PENH W=1u L=1u
+MP3 vdd clk3 out vdd PENH W=1u L=1u
 MN3 b clk3 c  0 NENH W=1u L=1u
 
 *CLK4 MOSFET [MP4, MN4]
-MP4 vdd clk4 out 0 PENH W=1u L=1u
+MP4 vdd clk4 out vdd PENH W=1u L=1u
 MN4 c clk4 0 0 NENH W=1u L=1u
 
 *Plot
