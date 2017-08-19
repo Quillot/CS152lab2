@@ -1,35 +1,37 @@
-*Implementation for a circuit that computes F = !AB + !BC + !CA
+*Implementation for F = !A + BC
 *By Gabriel De Jesus & Jayce Caylah Ching, CS152B
 
 .include "8clocks.jsim"
 .include "nominal.jsim"
 
-*Written in the format source gate drain
-
-*!A MOSFET [MP1, MN1] - connected to OR MOSFET by node a (acts as the clock)
-*A Clock1 input
-MP1 vdd clk1 a 0 PENH W=1u L=1u
+*CLK1 MOSFETs (clk1 INVERTER) a = !A
+MP1 vdd clk1 a vdd PENH W=1u L=1u
 MN1 a clk1 0 0 NENH W=1u L=1u
 
-*BC MOSFET [MN4, MP4], [MN5, MP5] - connected to OR MOSFET by node c (acts as the clock)
-*B Clock2 input
-MN4 vdd clk2 z 0 NENH W=1u L=1u
-MP4 c clk2 0 0 PENH W=1u L=1u
-*C Clock3 input
-MN5 z clk3 c 0 NENH W=1u L=1u
-MP5 c clk3 0 0 PENH W=1u L=1u
+*CLK2 NAND CLK3 MOSFETs b = B NAND C
+MP2 vdd clk2 b vdd PENH W=1u L=1u
+MN2 b clk2 i 0 NENH W=1u L=1u
 
-*OR MOSFET [MN2, MP2], [MN3, MP3] - Output F is here
-*Node a input
-MN2 vdd a out 0 NENH W=1u L=1u
-MP2 b a 0 0 PENH W=1u L=1u
-*Node c input
-MN3 vdd c out 0 NENH W=1u L=1u
-MP3 out c b 0 PENH W=1u L=1u
+MP3 vdd clk3 b vdd PENH W=1u L=1u
+MN3 i clk3 0 0 NENH W=1u L=1u
 
-*Plot
+*CLK2 AND CLK3 MOSFETs (INVERT NAND OUTPUT) c = BC
+MP4 vdd b c vdd PENH W=1u L=1u 
+MN4 c b 0 0 NENH W=1u L=1u
+
+*!A NAND BC MOSFETs d = !A NAND BC
+MP5 vdd a x vdd PENH W=1u L=1u
+MN5 d a 0 0 NENH W=1u L=1u
+
+MP6 x c d vdd PENH W=1u L=1u 
+MN6 d c 0 0 NENH W=1u L=1u
+
+*!A + BC MOSFETs (INVERT !A NAND BC) out = !A + BC
+MP7 vdd d out vdd PENH W=1u L=1u 
+MN7 out d 0 0 NENH W=1u L=1u
+
+*PLOT
 .tran 100ns
-.plot clk1 out
+.plot clk1 out 
 .plot clk2 out
 .plot clk3 out
-.plot clk4 out

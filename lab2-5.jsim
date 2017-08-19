@@ -1,0 +1,71 @@
+*Implementation for F = !AB + !BC + !CA
+*By Gabriel De Jesus & Jayce Caylah Ching, CS152B
+
+.include "8clocks.jsim"
+.include "nominal.jsim"
+
+*clk1 = A, clk2 = B, clk3 = C
+
+*clk1 MOSFETs (clk1 INVERTER) na = !A
+MP1 vdd clk1 na vdd PENH W=1u L=1u
+MN1 na clk1 0 0 NENH W=1u L=1u
+
+*clk2 MOSFETs (clk2 INVERTER) nb = !B
+MP2 vdd clk2 nb vdd PENH W=1u L=1u
+MN2 nb clk2 0 0 NENH W=1u L=1u
+
+*clk3 MOSFETs (clk3 INVERTER) nc = !C
+MP3 vdd clk3 nc vdd PENH W=1u L=1u
+MN3 nc clk3 0 0 NENH W=1u L=1u
+
+*!A NAND B MOSFETs (M4 = !A, M5 = 😎 nab = !A NAND B 
+MP4 vdd na nab vdd PENH W=1u L=1u
+MN4 nab na i 0 NENH W=1u L=1u
+
+MP5 vdd clk2 nab vdd PENH W=1u L=1u
+MN5 i clk2 0 0 NENH W=1u L=1u
+
+*!A AND B MOSFETs (INVERT NAND OUTPUT) ab = !AB
+MP6 vdd nab ab vdd PENH W=1u L=1u
+MN6 ab nab 0 0 NENH W=1u L=1u
+
+*!B NAND C MOSFETs (M7 = !B, M8 = C) nbc = !B NAND C
+MP7 vdd nb nbc vdd PENH W=1u L=1u
+MN7 nbc nb i2 0 NENH W=1u L=1u
+
+MP8 vdd clk3 nbc vdd PENH W=1u L=1u
+MN8 i2 clk3 0 0 NENH W=1u L=1u
+
+*!B AND C MOSFETs (INVERT NAND OUTPUT) bc = !BC
+MP9 vdd nbc bc vdd PENH W=1u L=1u
+MN9 bc nbc 0 0 NENH W=1u L=1u
+
+*!C NAND A MOSFETs (M10 = !C, M11 = A) nca = !C NAND A
+MP10 vdd nc nca vdd PENH W=1u L=1u
+MN10 nca nc i3 0 NENH W=1u L=1u
+
+MP11 vdd clk1 nca vdd PENH W=1u L=1u
+MN11 i3 clk1 0 0 NENH W=1u L=1u
+
+*!C AND A MOSFETs (INVERT NAND OUTPUT) ca = !CA
+MP12 vdd nca ca vdd PENH W=1u L=1u
+MN12 ca nca 0 0 NENH W=1u L=1u
+
+*!AB NOR !BC NOR !CA (MP13 = !AB, MP14 = !BC, MP15 = !CA) nabc = !AB NOR !BC NOR !CA
+MP13 vdd ab x vdd PENH W=1u L=1u 
+MN13 nabc ab 0 0 NENH W=1u L=1u
+
+MP14 x bc y vdd PENH W=1u L=1u 
+MN14 nabc bc 0 0 NENH W=1u L=1u
+
+MP15 y ca nabc vdd PENH W=1u L=1u
+MN15 nabc ca 0 0 NENH W=1u L=1u
+
+*!AB OR !BC OR !CA (INVERT NOR OUTPUT) abc = !AB + !BC + !CA
+MP16 vdd nabc abc vdd PENH W=1u L=1u
+MN16 abc nabc 0 0 NENH W=1u L=1u 
+
+.tran 50ns
+.plot clk1 abc
+.plot clk2 abc
+.plot clk3 abc

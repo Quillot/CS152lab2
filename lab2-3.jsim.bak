@@ -4,12 +4,14 @@
 .include "8clocks.jsim"
 .include "nominal.jsim"
 
+*Written in the format source gate drain
+
 *CLK1 MOSFET [MP1, MN1]
 MP1 vdd nclk2 a vdd PENH W=1u L=1u
 MN1 out nclk2 c 0 NENH W=1u L=1u
 
 *CLK2 MOSFET [MP2, MN2]
-MP2 vdd clk2 b vdd PENH W=1u L=1u
+MP2	vdd clk2 b vdd PENH W=1u L=1u
 MN2 out clk2 d 0 NENH W=1u L=1u
 
 *NCLK1 MOSFET [MP3, MN3]
